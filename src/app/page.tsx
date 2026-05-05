@@ -21,7 +21,8 @@ const services = [
     title: "공사업 양도양수",
     desc: "전기공사업 면허 양도·인수의 전 과정을 체계적으로 대행합니다. 검증된 매물과 신뢰할 수 있는 거래를 보장합니다.",
     href: "/transfer/sell-list",
-    color: "from-blue-900 to-navy",
+    color: "bg-blue-50",
+    iconColor: "text-blue-600",
   },
   {
     icon: (
@@ -42,7 +43,8 @@ const services = [
     title: "신규 창업",
     desc: "전기공사업 등록부터 법인설립, 공제조합 가입까지 창업의 모든 단계를 원스톱으로 지원합니다.",
     href: "/startup/electric",
-    color: "from-emerald-900 to-navy",
+    color: "bg-emerald-50",
+    iconColor: "text-emerald-600",
   },
   {
     icon: (
@@ -63,7 +65,8 @@ const services = [
     title: "기업 진단",
     desc: "전문 컨설턴트가 기업의 현황을 면밀히 분석하여 최적의 경영 전략과 개선 방안을 제시합니다.",
     href: "/startup/diagnosis",
-    color: "from-violet-900 to-navy",
+    color: "bg-violet-50",
+    iconColor: "text-violet-600",
   },
   {
     icon: (
@@ -84,7 +87,8 @@ const services = [
     title: "분할·합병",
     desc: "기업 분할 및 합병의 복잡한 법적·행정적 절차를 전문가가 직접 처리하여 안전하게 진행합니다.",
     href: "/division/overview",
-    color: "from-amber-900 to-navy",
+    color: "bg-amber-50",
+    iconColor: "text-amber-600",
   },
 ];
 
@@ -109,15 +113,15 @@ export default function Home() {
       <HeroSlideshow />
 
       {/* Stats bar */}
-      <div className="bg-navy">
+      <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-100">
             {stats.map((stat, i) => (
               <div key={i} className="py-8 px-6 text-center">
                 <div className="text-3xl md:text-4xl font-bold text-gold mb-1">
                   {stat.number}
                 </div>
-                <div className="text-white/60 text-sm">{stat.label}</div>
+                <div className="text-gray-500 text-sm">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -145,35 +149,30 @@ export default function Home() {
               <Link
                 key={i}
                 href={svc.href}
-                className="group relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className={`group rounded-lg shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${svc.color} p-8`}
               >
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${svc.color} opacity-90`}
-                />
-                <div className="relative z-10 p-8">
-                  <div className="text-gold mb-5">{svc.icon}</div>
-                  <h3 className="text-white font-bold text-xl mb-3">
-                    {svc.title}
-                  </h3>
-                  <p className="text-white/70 text-sm leading-relaxed">
-                    {svc.desc}
-                  </p>
-                  <div className="mt-6 flex items-center gap-1.5 text-gold text-sm font-medium">
-                    자세히 보기
-                    <svg
-                      className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
+                <div className={`${svc.iconColor} mb-5`}>{svc.icon}</div>
+                <h3 className="text-gray-900 font-bold text-xl mb-3">
+                  {svc.title}
+                </h3>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  {svc.desc}
+                </p>
+                <div className="mt-6 flex items-center gap-1.5 text-gold text-sm font-medium">
+                  자세히 보기
+                  <svg
+                    className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
                 </div>
               </Link>
             ))}
@@ -310,7 +309,7 @@ export default function Home() {
                 className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-gold/30 transition-all"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className="bg-navy text-white text-xs px-2.5 py-1 rounded font-medium">
+                  <span className="bg-gray-100 text-gray-700 text-xs px-2.5 py-1 rounded font-medium">
                     매물번호 {item.no}
                   </span>
                   <span className="text-gray-400 text-xs">{item.date}</span>

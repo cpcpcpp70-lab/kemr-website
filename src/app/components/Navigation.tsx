@@ -74,10 +74,11 @@ export default function Navigation() {
     setOpenMobileMenu(null);
   }, [pathname]);
 
-  const navBg =
-    isHome && !scrolled
-      ? "bg-transparent"
-      : "bg-navy shadow-lg";
+  const isTransparent = isHome && !scrolled;
+  const navBg = isTransparent ? "bg-transparent" : "bg-white shadow-md";
+  const textColor = isTransparent ? "text-white" : "text-navy";
+  const menuTextColor = isTransparent ? "text-white/90 hover:text-gold" : "text-gray-700 hover:text-gold";
+  const barColor = isTransparent ? "bg-white" : "bg-navy";
 
   return (
     <header
@@ -95,7 +96,7 @@ export default function Navigation() {
               height={55}
               style={{ objectFit: "contain" }}
             />
-            <span className="text-white font-bold text-[26px] tracking-tight whitespace-nowrap">
+            <span className={`font-bold text-[26px] tracking-tight whitespace-nowrap ${textColor}`}>
               전기창업경영연구원
             </span>
           </Link>
@@ -109,7 +110,7 @@ export default function Navigation() {
                 onMouseEnter={() => setHoveredMenu(item.id)}
                 onMouseLeave={() => setHoveredMenu(null)}
               >
-                <button className="flex items-center gap-1 px-5 py-2 text-white/90 hover:text-gold text-[17px] font-medium transition-colors whitespace-nowrap h-[90px]">
+                <button className={`flex items-center gap-1 px-5 py-2 text-[17px] font-medium transition-colors whitespace-nowrap h-[90px] ${menuTextColor}`}>
                   {item.label}
                   <svg
                     className={`w-3 h-3 transition-transform duration-200 ${hoveredMenu === item.id ? "rotate-180" : ""}`}
@@ -161,20 +162,14 @@ export default function Navigation() {
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden text-white p-2"
+            className="lg:hidden p-2"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="메뉴"
           >
             <div className="w-6 flex flex-col gap-1.5">
-              <span
-                className={`block h-0.5 bg-white transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-2" : ""}`}
-              />
-              <span
-                className={`block h-0.5 bg-white transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`}
-              />
-              <span
-                className={`block h-0.5 bg-white transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`}
-              />
+              <span className={`block h-0.5 transition-all duration-300 ${barColor} ${mobileOpen ? "rotate-45 translate-y-2" : ""}`} />
+              <span className={`block h-0.5 transition-all duration-300 ${barColor} ${mobileOpen ? "opacity-0" : ""}`} />
+              <span className={`block h-0.5 transition-all duration-300 ${barColor} ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`} />
             </div>
           </button>
         </div>
@@ -182,15 +177,15 @@ export default function Navigation() {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden bg-navy border-t border-white/10 overflow-hidden transition-all duration-300 ${
-          mobileOpen ? "max-h-screen" : "max-h-0"
-        }`}
+        className={`lg:hidden border-t overflow-hidden transition-all duration-300 ${
+          isTransparent ? "bg-navy/90 border-white/10" : "bg-white border-gray-100"
+        } ${mobileOpen ? "max-h-screen" : "max-h-0"}`}
       >
         <div className="px-4 py-2">
           {menuItems.map((item) => (
-            <div key={item.id} className="border-b border-white/10">
+            <div key={item.id} className={`border-b ${isTransparent ? "border-white/10" : "border-gray-100"}`}>
               <button
-                className="flex items-center justify-between w-full py-3 text-white/90 text-[17px] font-medium"
+                className={`flex items-center justify-between w-full py-3 text-[17px] font-medium ${isTransparent ? "text-white/90" : "text-gray-700"}`}
                 onClick={() =>
                   setOpenMobileMenu(
                     openMobileMenu === item.id ? null : item.id
@@ -218,7 +213,7 @@ export default function Navigation() {
                     <Link
                       key={sub.href}
                       href={sub.href}
-                      className="block py-2 text-white/70 hover:text-gold text-[15px]"
+                      className={`block py-2 hover:text-gold text-[15px] ${isTransparent ? "text-white/70" : "text-gray-500"}`}
                     >
                       {sub.label}
                     </Link>
