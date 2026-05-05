@@ -14,10 +14,10 @@ const SHEETS = {
 type SheetKey = keyof typeof SHEETS;
 
 const HEADERS: Record<SheetKey, string[]> = {
-  listings:  ["번호", "등록일", "지역", "업종", "자본금", "양도가", "상태", "연락처", "비고"],
-  consults:  ["번호", "신청일", "이름", "연락처", "이메일", "상담유형", "내용", "처리상태"],
-  notices:   ["번호", "등록일", "카테고리", "제목", "내용", "상태"],
-  inquiries: ["번호", "문의일", "이름", "연락처", "이메일", "제목", "내용", "답변상태"],
+  listings:  ["No","매물번호","등록일","설립연도","법인형태","지역","면허종류","자본금","20년","21년","22년","23년","24년","25년","26년","3년실적","5년실적","조합예치금","매매가","양도방식","매물상태","비고"],
+  consults:  ["No","상담일자","업체명","대표자","연락처","지역","관심서비스","상담경로","상담내용","진행상태","다음연락일","담당자","계약여부","계약금액","비고"],
+  notices:   ["No","제목","내용","작성일","작성자","공개여부"],
+  inquiries: ["No","문의일자","업체명","연락처","문의내용","답변여부","답변내용"],
 };
 
 function api(token: string) {
@@ -112,7 +112,7 @@ export default function AdminDashboard() {
     load(token, tab);
   };
 
-  const canEdit = tab === "listings" || tab === "notices";
+  const canEdit = true;
   const dataRows = rows.slice(1); // skip header row
 
   return (
