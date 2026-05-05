@@ -13,6 +13,8 @@ const faqs = [
 export default function InquiryPage() {
   const [submitted, setSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   return (
     <>
@@ -71,24 +73,50 @@ export default function InquiryPage() {
                 <button onClick={() => setSubmitted(false)} className="btn-primary text-sm py-2.5 px-6">새 문의하기</button>
               </div>
             ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="space-y-4">
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setLoading(true);
+                  setError("");
+                  const fd = new FormData(e.currentTarget);
+                  try {
+                    const res = await fetch("/api/inquiry", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        name: fd.get("name"),
+                        phone: fd.get("phone"),
+                        inquiryType: fd.get("inquiryType"),
+                        content: fd.get("content"),
+                      }),
+                    });
+                    if (!res.ok) {
+                      const data = await res.json();
+                      setError(data.error ?? "오류가 발생했습니다");
+                    } else {
+                      setSubmitted(true);
+                    }
+                  } catch {
+                    setError("네트워크 오류가 발생했습니다");
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+                className="space-y-4"
+              >
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="form-label">성함 <span className="text-red-500">*</span></label>
-                    <input type="text" className="form-input" required />
+                    <input name="name" type="text" className="form-input" required />
                   </div>
                   <div>
                     <label className="form-label">연락처 <span className="text-red-500">*</span></label>
-                    <input type="tel" className="form-input" placeholder="010-0000-0000" required />
+                    <input name="phone" type="tel" className="form-input" placeholder="010-0000-0000" required />
                   </div>
                 </div>
                 <div>
-                  <label className="form-label">이메일</label>
-                  <input type="email" className="form-input" placeholder="example@email.com" />
-                </div>
-                <div>
                   <label className="form-label">문의 유형</label>
-                  <select className="form-input">
+                  <select name="inquiryType" className="form-input">
                     <option>전기공사업 등록</option>
                     <option>양도양수</option>
                     <option>법인설립</option>
@@ -98,9 +126,12 @@ export default function InquiryPage() {
                 </div>
                 <div>
                   <label className="form-label">문의 내용 <span className="text-red-500">*</span></label>
-                  <textarea className="form-input h-36 resize-none" placeholder="궁금하신 사항을 상세히 적어주세요" required />
+                  <textarea name="content" className="form-input h-36 resize-none" placeholder="궁금하신 사항을 상세히 적어주세요" required />
                 </div>
-                <button type="submit" className="w-full btn-gold text-base py-3.5">문의 접수하기</button>
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+                <button type="submit" disabled={loading} className="w-full btn-gold text-base py-3.5 disabled:opacity-60">
+                  {loading ? "접수 중..." : "문의 접수하기"}
+                </button>
               </form>
             )}
           </div>
