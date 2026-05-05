@@ -74,11 +74,11 @@ export default function Navigation() {
     setOpenMobileMenu(null);
   }, [pathname]);
 
-  const isTransparent = isHome && !scrolled;
+  const isTransparent = !scrolled;
   const navBg = isTransparent ? "bg-transparent" : "bg-white shadow-md";
-  const textColor = isTransparent ? "text-white" : "text-navy";
-  const menuTextColor = isTransparent ? "text-white/90 hover:text-gold" : "text-gray-700 hover:text-gold";
-  const barColor = isTransparent ? "bg-white" : "bg-navy";
+  const textColor = isHome && isTransparent ? "text-white" : "text-navy";
+  const menuTextColor = isHome && isTransparent ? "text-white/90 hover:text-gold" : "text-gray-700 hover:text-gold";
+  const barColor = isHome && isTransparent ? "bg-white" : "bg-navy";
 
   return (
     <header

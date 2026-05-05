@@ -21,18 +21,16 @@ export default function PageHeader({
   backgroundImage,
 }: PageHeaderProps) {
   return (
-    <div className="pt-[90px]">
-      <div
-        className="relative overflow-hidden"
-        style={{
-          backgroundImage:
-            `url(${backgroundImage ?? DEFAULT_BG})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-        }}
-      >
-        <div className="absolute inset-0 bg-white/60" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
+    <div
+      className="relative overflow-hidden"
+      style={{
+        backgroundImage: `url(${backgroundImage ?? DEFAULT_BG})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+      }}
+    >
+      <div className="absolute inset-0 bg-white/60" />
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-[130px] pb-16">
           {breadcrumbs && breadcrumbs.length > 0 && (
             <nav className="flex items-center gap-2 text-gray-500 text-sm mb-4">
               <Link href="/" className="hover:text-gold transition-colors">
@@ -65,7 +63,6 @@ export default function PageHeader({
                 <p className="mt-2 text-gray-600 text-base">{subtitle}</p>
               )}
             </div>
-          </div>
         </div>
       </div>
     </div>
