@@ -78,22 +78,22 @@ export default function Navigation() {
   const navBg = isTransparent ? "bg-transparent" : "bg-white shadow-md";
   const textColor = isHome && isTransparent ? "text-white" : "text-navy";
   const menuTextColor = isHome && isTransparent ? "text-white/90 hover:text-gold" : "text-gray-700 hover:text-gold";
+  const dividerColor = isHome && isTransparent ? "border-white/20" : "border-gray-100";
   const barColor = isHome && isTransparent ? "bg-white" : "bg-navy";
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBg}`}
-    >
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBg}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-[180px]">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
+
+        {/* 1행: 로고 + 상호명 */}
+        <div className="flex items-center justify-between pt-5 pb-3">
+          <Link href="/" className="flex items-center gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo.png"
               alt="KEMR 전기창업경영연구원 로고"
-              width={160}
-              height={110}
+              width={120}
+              height={80}
               style={{ objectFit: "contain" }}
             />
             <span className={`font-bold text-[52px] tracking-tight whitespace-nowrap ${textColor}`}>
@@ -101,81 +101,70 @@ export default function Navigation() {
             </span>
           </Link>
 
-          {/* Desktop Menu */}
-          <nav className="hidden lg:flex items-center gap-0">
-            {menuItems.map((item) => (
-              <div
-                key={item.id}
-                className="relative"
-                onMouseEnter={() => setHoveredMenu(item.id)}
-                onMouseLeave={() => setHoveredMenu(null)}
-              >
-                <button className={`flex items-center gap-1 px-5 py-2 text-[34px] font-medium transition-colors whitespace-nowrap h-[180px] ${menuTextColor}`}>
-                  {item.label}
-                  <svg
-                    className={`w-3 h-3 transition-transform duration-200 ${hoveredMenu === item.id ? "rotate-180" : ""}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-
-                {/* Dropdown */}
-                <div
-                  className={`absolute top-full left-0 min-w-[160px] bg-white shadow-2xl border-t-2 border-gold transition-all duration-200 ${
-                    hoveredMenu === item.id
-                      ? "opacity-100 visible translate-y-0"
-                      : "opacity-0 invisible -translate-y-2"
-                  }`}
-                >
-                  {item.submenu.map((sub) => (
-                    <Link
-                      key={sub.href}
-                      href={sub.href}
-                      className={`block px-5 py-3 text-[30px] font-medium border-b border-gray-100 last:border-0 transition-colors whitespace-nowrap ${
-                        pathname === sub.href
-                          ? "text-gold bg-amber-50"
-                          : "text-gray-700 hover:text-gold hover:bg-amber-50"
-                      }`}
-                    >
-                      {sub.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            <Link
-              href="/consult"
-              className="ml-4 px-6 py-3 bg-gold hover:bg-gold-light text-white text-[32px] font-bold rounded transition-colors whitespace-nowrap"
-            >
-              무료 상담신청
-            </Link>
-          </nav>
-
-          {/* Mobile hamburger */}
+          {/* 모바일 햄버거 */}
           <button
             className="lg:hidden p-2"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="메뉴"
           >
-            <div className="w-6 flex flex-col gap-1.5">
-              <span className={`block h-0.5 transition-all duration-300 ${barColor} ${mobileOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <div className="w-8 flex flex-col gap-2">
+              <span className={`block h-0.5 transition-all duration-300 ${barColor} ${mobileOpen ? "rotate-45 translate-y-2.5" : ""}`} />
               <span className={`block h-0.5 transition-all duration-300 ${barColor} ${mobileOpen ? "opacity-0" : ""}`} />
-              <span className={`block h-0.5 transition-all duration-300 ${barColor} ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+              <span className={`block h-0.5 transition-all duration-300 ${barColor} ${mobileOpen ? "-rotate-45 -translate-y-2.5" : ""}`} />
             </div>
           </button>
         </div>
+
+        {/* 2행: 데스크탑 메뉴 */}
+        <nav className={`hidden lg:flex items-center justify-center gap-2 pb-4 border-t ${dividerColor}`}>
+          {menuItems.map((item) => (
+            <div
+              key={item.id}
+              className="relative"
+              onMouseEnter={() => setHoveredMenu(item.id)}
+              onMouseLeave={() => setHoveredMenu(null)}
+            >
+              <button className={`flex items-center gap-1 px-6 pt-3 pb-2 text-[34px] font-medium transition-colors whitespace-nowrap ${menuTextColor}`}>
+                {item.label}
+                <svg
+                  className={`w-5 h-5 transition-transform duration-200 ${hoveredMenu === item.id ? "rotate-180" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* 드롭다운 */}
+              <div
+                className={`absolute top-full left-0 min-w-[200px] bg-white shadow-2xl border-t-2 border-gold transition-all duration-200 ${
+                  hoveredMenu === item.id
+                    ? "opacity-100 visible translate-y-0"
+                    : "opacity-0 invisible -translate-y-2"
+                }`}
+              >
+                {item.submenu.map((sub) => (
+                  <Link
+                    key={sub.href}
+                    href={sub.href}
+                    className={`block px-6 py-4 text-[24px] font-medium border-b border-gray-100 last:border-0 transition-colors whitespace-nowrap ${
+                      pathname === sub.href
+                        ? "text-gold bg-amber-50"
+                        : "text-gray-700 hover:text-gold hover:bg-amber-50"
+                    }`}
+                  >
+                    {sub.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
       </div>
 
-      {/* Mobile Menu */}
+      {/* 모바일 메뉴 */}
       <div
         className={`lg:hidden border-t overflow-hidden transition-all duration-300 ${
           isTransparent ? "bg-navy/90 border-white/10" : "bg-white border-gray-100"
@@ -185,35 +174,26 @@ export default function Navigation() {
           {menuItems.map((item) => (
             <div key={item.id} className={`border-b ${isTransparent ? "border-white/10" : "border-gray-100"}`}>
               <button
-                className={`flex items-center justify-between w-full py-3 text-[34px] font-medium ${isTransparent ? "text-white/90" : "text-gray-700"}`}
-                onClick={() =>
-                  setOpenMobileMenu(
-                    openMobileMenu === item.id ? null : item.id
-                  )
-                }
+                className={`flex items-center justify-between w-full py-4 text-[34px] font-medium ${isTransparent ? "text-white/90" : "text-gray-700"}`}
+                onClick={() => setOpenMobileMenu(openMobileMenu === item.id ? null : item.id)}
               >
                 {item.label}
                 <svg
-                  className={`w-4 h-4 transition-transform ${openMobileMenu === item.id ? "rotate-180" : ""}`}
+                  className={`w-6 h-6 transition-transform ${openMobileMenu === item.id ? "rotate-180" : ""}`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
               {openMobileMenu === item.id && (
-                <div className="pl-4 pb-2">
+                <div className="pl-4 pb-3">
                   {item.submenu.map((sub) => (
                     <Link
                       key={sub.href}
                       href={sub.href}
-                      className={`block py-2 hover:text-gold text-[30px] ${isTransparent ? "text-white/70" : "text-gray-500"}`}
+                      className={`block py-3 hover:text-gold text-[28px] ${isTransparent ? "text-white/70" : "text-gray-500"}`}
                     >
                       {sub.label}
                     </Link>
@@ -222,12 +202,6 @@ export default function Navigation() {
               )}
             </div>
           ))}
-          <Link
-            href="/consult"
-            className="block my-3 py-3 text-center bg-gold text-white text-[34px] font-bold rounded"
-          >
-            무료 상담신청
-          </Link>
         </div>
       </div>
     </header>

@@ -30,7 +30,7 @@ export default function PageHeader({
       }}
     >
       <div className="absolute inset-0 bg-white/60" />
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-[200px] pb-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-[220px] pb-16">
           {breadcrumbs && breadcrumbs.length > 0 && (
             <nav className="flex items-center gap-2 text-gray-500 text-sm mb-4">
               <Link href="/" className="hover:text-gold transition-colors">
