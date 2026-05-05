@@ -24,31 +24,52 @@ export async function readSheet(sheetName: string): Promise<string[][]> {
   return (res.data.values as string[][]) ?? [];
 }
 
+async function getSheetId(sheetName: string): Promise<number> {
+  const meta = await sheets().spreadsheets.get({ spreadsheetId: SPREADSHEET_ID });
+  const sheet = meta.data.sheets?.find((s) => s.properties?.title === sheetName);
+  return sheet?.properties?.sheetId ?? 0;
+}
+
 export async function appendRow(sheetName: string, values: string[]): Promise<void> {
-  await sheets().spreadsheets.values.append({
+  const sheetId = await getSheetId(sheetName);
+  await sheets().spreadsheets.batchUpdate({
     spreadsheetId: SPREADSHEET_ID,
-    range: `'${sheetName}'!A:Z`,
-    valueInputOption: "USER_ENTERED",
-    requestBody: { values: [values] },
+    requestBody: {
+      requests: [{
+        appendCells: {
+          sheetId,
+          rows: [{ values: values.map(v => ({ userEnteredValue: { stringValue: v } })) }],
+          fields: "userEnteredValue",
+        },
+      }],
+    },
   });
 }
 
 export async function updateRow(sheetName: string, rowIndex: number, values: string[]): Promise<void> {
-  await sheets().spreadsheets.values.update({
+  const sheetId = await getSheetId(sheetName);
+  await sheets().spreadsheets.batchUpdate({
     spreadsheetId: SPREADSHEET_ID,
-    range: `'${sheetName}'!A${rowIndex}:Z${rowIndex}`,
-    valueInputOption: "USER_ENTERED",
-    requestBody: { values: [values] },
+    requestBody: {
+      requests: [{
+        updateCells: {
+          range: {
+            sheetId,
+            startRowIndex: rowIndex - 1,
+            endRowIndex: rowIndex,
+            startColumnIndex: 0,
+            endColumnIndex: values.length,
+          },
+          rows: [{ values: values.map(v => ({ userEnteredValue: { stringValue: v } })) }],
+          fields: "userEnteredValue",
+        },
+      }],
+    },
   });
 }
 
 export async function deleteRow(sheetName: string, rowIndex: number): Promise<void> {
-  const meta = await sheets().spreadsheets.get({ spreadsheetId: SPREADSHEET_ID });
-  const sheet = meta.data.sheets?.find(
-    (s) => s.properties?.title === sheetName
-  );
-  const sheetId = sheet?.properties?.sheetId ?? 0;
-
+  const sheetId = await getSheetId(sheetName);
   await sheets().spreadsheets.batchUpdate({
     spreadsheetId: SPREADSHEET_ID,
     requestBody: {
