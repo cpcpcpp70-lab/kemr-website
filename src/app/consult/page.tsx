@@ -13,6 +13,7 @@ export default function ConsultPage() {
         title="무료 상담신청"
         subtitle="전문 컨설턴트와 1:1 맞춤 상담을 받아보세요"
         breadcrumbs={[{ label: "무료 상담신청" }]}
+        backgroundImage="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1920&q=80&auto=format&fit=crop"
       />
 
       <div className="max-w-5xl mx-auto px-6 py-12">

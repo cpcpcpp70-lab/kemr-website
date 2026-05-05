@@ -10,6 +10,7 @@ export default function DiagnosisPage() {
         title="기업진단"
         subtitle="전문 컨설턴트의 심층 기업 분석 서비스"
         breadcrumbs={[{ label: "신규창업" }, { label: "기업진단" }]}
+        backgroundImage="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&q=80&auto=format&fit=crop"
       />
       <div className="max-w-5xl mx-auto px-6 py-16 space-y-14">
         <section>

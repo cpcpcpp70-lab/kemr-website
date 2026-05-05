@@ -9,6 +9,7 @@ export default function CompanyIntroPage() {
         title="회사소개"
         subtitle="전기공사업 전문 컨설팅 기관"
         breadcrumbs={[{ label: "회사소개" }]}
+        backgroundImage="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80&auto=format&fit=crop"
       />
 
       <div className="max-w-5xl mx-auto px-6 py-16">

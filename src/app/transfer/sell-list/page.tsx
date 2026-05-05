@@ -21,6 +21,7 @@ export default function SellListPage() {
         title="양수/양도 회사목록"
         subtitle="현재 양도 가능한 전기공사업 면허 목록입니다"
         breadcrumbs={[{ label: "공사업양도양수" }, { label: "양수/양도 회사목록" }]}
+        backgroundImage="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80&auto=format&fit=crop"
       />
 
       <div className="max-w-full px-6 py-12">

@@ -10,6 +10,7 @@ export default function CooperativePage() {
         title="공제조합"
         subtitle="전기공사공제조합 가입 안내"
         breadcrumbs={[{ label: "신규창업" }, { label: "공제조합" }]}
+        backgroundImage="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1920&q=80&auto=format&fit=crop"
       />
       <div className="max-w-5xl mx-auto px-6 py-16 space-y-14">
         <section>

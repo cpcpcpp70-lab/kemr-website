@@ -10,6 +10,7 @@ export default function CorporationPage() {
         title="법인설립"
         subtitle="전기공사업을 위한 최적의 법인 설립을 도와드립니다"
         breadcrumbs={[{ label: "신규창업" }, { label: "법인설립" }]}
+        backgroundImage="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80&auto=format&fit=crop"
       />
       <div className="max-w-5xl mx-auto px-6 py-16 space-y-14">
         <section>

@@ -43,6 +43,7 @@ export default function LawPage() {
         title="전기법령"
         subtitle="전기공사업 관련 주요 법령 안내"
         breadcrumbs={[{ label: "Q&A" }, { label: "전기법령" }]}
+        backgroundImage="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&q=80&auto=format&fit=crop"
       />
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="bg-amber-50 border-l-4 border-gold rounded p-4 mb-10 text-sm text-amber-800">

@@ -9,12 +9,16 @@ interface PageHeaderProps {
   title: string;
   subtitle?: string;
   breadcrumbs?: Breadcrumb[];
+  backgroundImage?: string;
 }
+
+const DEFAULT_BG = "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80&auto=format&fit=crop";
 
 export default function PageHeader({
   title,
   subtitle,
   breadcrumbs,
+  backgroundImage,
 }: PageHeaderProps) {
   return (
     <div className="pt-[90px]">
@@ -22,7 +26,7 @@ export default function PageHeader({
         className="relative overflow-hidden"
         style={{
           backgroundImage:
-            "url(https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80&auto=format&fit=crop)",
+            `url(${backgroundImage ?? DEFAULT_BG})`,
           backgroundSize: "cover",
           backgroundPosition: "center top",
         }}

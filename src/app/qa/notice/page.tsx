@@ -22,6 +22,7 @@ export default function NoticePage() {
         title="공지사항"
         subtitle="전기창업경영연구원의 최신 소식과 공지사항을 확인하세요"
         breadcrumbs={[{ label: "Q&A" }, { label: "공지사항" }]}
+        backgroundImage="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1920&q=80&auto=format&fit=crop"
       />
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="overflow-x-auto rounded-lg shadow-sm border border-gray-200">

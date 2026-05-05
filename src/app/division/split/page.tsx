@@ -10,6 +10,7 @@ export default function SplitPage() {
         title="분할안내"
         subtitle="전기공사업 기업 분할 절차 안내"
         breadcrumbs={[{ label: "분할·합병" }, { label: "분할안내" }]}
+        backgroundImage="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1920&q=80&auto=format&fit=crop"
       />
       <div className="max-w-5xl mx-auto px-6 py-16 space-y-14">
         <section>

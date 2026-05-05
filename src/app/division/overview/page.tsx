@@ -10,6 +10,7 @@ export default function DivisionOverviewPage() {
         title="분할합병 업무개요"
         subtitle="전기공사업 기업 분할·합병의 모든 것"
         breadcrumbs={[{ label: "분할·합병" }, { label: "분할합병 업무개요" }]}
+        backgroundImage="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=80&auto=format&fit=crop"
       />
       <div className="max-w-5xl mx-auto px-6 py-16 space-y-14">
         <section>

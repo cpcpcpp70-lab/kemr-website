@@ -10,6 +10,7 @@ export default function EngineerPage() {
         title="기술자"
         subtitle="전기공사업 기술자 확보 및 자격증 안내"
         breadcrumbs={[{ label: "신규창업" }, { label: "기술자" }]}
+        backgroundImage="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80&auto=format&fit=crop"
       />
       <div className="max-w-5xl mx-auto px-6 py-16 space-y-14">
         <section>

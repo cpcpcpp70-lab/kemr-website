@@ -17,6 +17,7 @@ export default function SellRegisterPage() {
         title="양도/매도 등록"
         subtitle="양도하실 전기공사업 면허 정보를 등록해 주세요"
         breadcrumbs={[{ label: "공사업양도양수" }, { label: "양도/매도 등록" }]}
+        backgroundImage="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80&auto=format&fit=crop"
       />
 
       <div className="max-w-3xl mx-auto px-6 py-12">

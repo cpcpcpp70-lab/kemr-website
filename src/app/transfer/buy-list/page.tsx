@@ -18,6 +18,7 @@ export default function BuyListPage() {
         title="인수희망목록"
         subtitle="전기공사업 인수를 희망하는 고객 목록입니다"
         breadcrumbs={[{ label: "공사업양도양수" }, { label: "인수희망목록" }]}
+        backgroundImage="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=80&auto=format&fit=crop"
       />
 
       <div className="max-w-7xl mx-auto px-6 py-12">

@@ -12,6 +12,7 @@ export default function TransferConsultPage() {
         title="온라인상담"
         subtitle="공사업 양도양수 관련 전문 상담을 신청하세요"
         breadcrumbs={[{ label: "공사업양도양수" }, { label: "온라인상담" }]}
+        backgroundImage="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=1920&q=80&auto=format&fit=crop"
       />
 
       <div className="max-w-3xl mx-auto px-6 py-12">

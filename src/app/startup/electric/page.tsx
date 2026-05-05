@@ -10,6 +10,7 @@ export default function ElectricPage() {
         title="전기공사업등록"
         subtitle="전기공사업 등록의 모든 것을 안내해 드립니다"
         breadcrumbs={[{ label: "신규창업" }, { label: "전기공사업등록" }]}
+        backgroundImage="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80&auto=format&fit=crop"
       />
 
       <div className="max-w-5xl mx-auto px-6 py-16 space-y-16">

@@ -20,6 +20,7 @@ export default function InquiryPage() {
         title="온라인문의"
         subtitle="궁금하신 사항을 남겨주시면 빠르게 답변드리겠습니다"
         breadcrumbs={[{ label: "Q&A" }, { label: "온라인문의" }]}
+        backgroundImage="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1920&q=80&auto=format&fit=crop"
       />
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">

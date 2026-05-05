@@ -12,6 +12,7 @@ export default function BuyRegisterPage() {
         title="인수희망등록"
         subtitle="인수하고자 하는 전기공사업 면허 조건을 등록해 주세요"
         breadcrumbs={[{ label: "공사업양도양수" }, { label: "인수희망등록" }]}
+        backgroundImage="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1920&q=80&auto=format&fit=crop"
       />
 
       <div className="max-w-3xl mx-auto px-6 py-12">
