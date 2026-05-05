@@ -27,7 +27,7 @@ export async function readSheet(sheetName: string): Promise<string[][]> {
 export async function appendRow(sheetName: string, values: string[]): Promise<void> {
   await sheets().spreadsheets.values.append({
     spreadsheetId: SPREADSHEET_ID,
-    range: `${sheetName}!A:Z`,
+    range: `'${sheetName}'!A:Z`,
     valueInputOption: "USER_ENTERED",
     requestBody: { values: [values] },
   });
@@ -36,7 +36,7 @@ export async function appendRow(sheetName: string, values: string[]): Promise<vo
 export async function updateRow(sheetName: string, rowIndex: number, values: string[]): Promise<void> {
   await sheets().spreadsheets.values.update({
     spreadsheetId: SPREADSHEET_ID,
-    range: `${sheetName}!A${rowIndex}:Z${rowIndex}`,
+    range: `'${sheetName}'!A${rowIndex}:Z${rowIndex}`,
     valueInputOption: "USER_ENTERED",
     requestBody: { values: [values] },
   });
