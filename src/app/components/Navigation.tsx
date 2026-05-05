@@ -85,18 +85,18 @@ export default function Navigation() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBg}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-[90px]">
+        <div className="flex items-center justify-between h-[180px]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo.png"
               alt="KEMR 전기창업경영연구원 로고"
-              width={80}
-              height={55}
+              width={160}
+              height={110}
               style={{ objectFit: "contain" }}
             />
-            <span className={`font-bold text-[26px] tracking-tight whitespace-nowrap ${textColor}`}>
+            <span className={`font-bold text-[52px] tracking-tight whitespace-nowrap ${textColor}`}>
               전기창업경영연구원
             </span>
           </Link>
@@ -110,7 +110,7 @@ export default function Navigation() {
                 onMouseEnter={() => setHoveredMenu(item.id)}
                 onMouseLeave={() => setHoveredMenu(null)}
               >
-                <button className={`flex items-center gap-1 px-5 py-2 text-[17px] font-medium transition-colors whitespace-nowrap h-[90px] ${menuTextColor}`}>
+                <button className={`flex items-center gap-1 px-5 py-2 text-[34px] font-medium transition-colors whitespace-nowrap h-[180px] ${menuTextColor}`}>
                   {item.label}
                   <svg
                     className={`w-3 h-3 transition-transform duration-200 ${hoveredMenu === item.id ? "rotate-180" : ""}`}
@@ -139,7 +139,7 @@ export default function Navigation() {
                     <Link
                       key={sub.href}
                       href={sub.href}
-                      className={`block px-5 py-3 text-[15px] font-medium border-b border-gray-100 last:border-0 transition-colors whitespace-nowrap ${
+                      className={`block px-5 py-3 text-[30px] font-medium border-b border-gray-100 last:border-0 transition-colors whitespace-nowrap ${
                         pathname === sub.href
                           ? "text-gold bg-amber-50"
                           : "text-gray-700 hover:text-gold hover:bg-amber-50"
@@ -154,7 +154,7 @@ export default function Navigation() {
 
             <Link
               href="/consult"
-              className="ml-4 px-6 py-3 bg-gold hover:bg-gold-light text-white text-[16px] font-bold rounded transition-colors whitespace-nowrap"
+              className="ml-4 px-6 py-3 bg-gold hover:bg-gold-light text-white text-[32px] font-bold rounded transition-colors whitespace-nowrap"
             >
               무료 상담신청
             </Link>
@@ -185,7 +185,7 @@ export default function Navigation() {
           {menuItems.map((item) => (
             <div key={item.id} className={`border-b ${isTransparent ? "border-white/10" : "border-gray-100"}`}>
               <button
-                className={`flex items-center justify-between w-full py-3 text-[17px] font-medium ${isTransparent ? "text-white/90" : "text-gray-700"}`}
+                className={`flex items-center justify-between w-full py-3 text-[34px] font-medium ${isTransparent ? "text-white/90" : "text-gray-700"}`}
                 onClick={() =>
                   setOpenMobileMenu(
                     openMobileMenu === item.id ? null : item.id
@@ -213,7 +213,7 @@ export default function Navigation() {
                     <Link
                       key={sub.href}
                       href={sub.href}
-                      className={`block py-2 hover:text-gold text-[15px] ${isTransparent ? "text-white/70" : "text-gray-500"}`}
+                      className={`block py-2 hover:text-gold text-[30px] ${isTransparent ? "text-white/70" : "text-gray-500"}`}
                     >
                       {sub.label}
                     </Link>
@@ -224,7 +224,7 @@ export default function Navigation() {
           ))}
           <Link
             href="/consult"
-            className="block my-3 py-3 text-center bg-gold text-white text-[17px] font-bold rounded"
+            className="block my-3 py-3 text-center bg-gold text-white text-[34px] font-bold rounded"
           >
             무료 상담신청
           </Link>
