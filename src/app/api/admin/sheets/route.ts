@@ -25,21 +25,36 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   if (!verify(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { sheet, values } = await req.json();
-  await appendRow(sheet, values);
-  return NextResponse.json({ ok: true });
+  try {
+    const { sheet, values } = await req.json();
+    await appendRow(sheet, values);
+    return NextResponse.json({ ok: true });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }
 
 export async function PUT(req: NextRequest) {
   if (!verify(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { sheet, rowIndex, values } = await req.json();
-  await updateRow(sheet, rowIndex, values);
-  return NextResponse.json({ ok: true });
+  try {
+    const { sheet, rowIndex, values } = await req.json();
+    await updateRow(sheet, rowIndex, values);
+    return NextResponse.json({ ok: true });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }
 
 export async function DELETE(req: NextRequest) {
   if (!verify(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { sheet, rowIndex } = await req.json();
-  await deleteRow(sheet, rowIndex);
-  return NextResponse.json({ ok: true });
+  try {
+    const { sheet, rowIndex } = await req.json();
+    await deleteRow(sheet, rowIndex);
+    return NextResponse.json({ ok: true });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }
