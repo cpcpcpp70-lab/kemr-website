@@ -6,6 +6,8 @@ import PageHeader from "../components/PageHeader";
 export default function ConsultPage() {
   const [submitted, setSubmitted] = useState(false);
   const [agreed, setAgreed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   return (
     <>
@@ -63,10 +65,7 @@ export default function ConsultPage() {
               <p className="text-gray-800 font-semibold text-sm mb-0.5">{c.value}</p>
               <p className="text-gray-400 text-xs mb-4">{c.sub}</p>
               {c.action && (
-                <a
-                  href={c.action.href}
-                  className="inline-block px-5 py-2 bg-navy text-white text-xs font-semibold rounded hover:bg-navy-mid transition-colors"
-                >
+                <a href={c.action.href} className="inline-block px-5 py-2 bg-navy text-white text-xs font-semibold rounded hover:bg-navy-mid transition-colors">
                   {c.action.label}
                 </a>
               )}
@@ -97,50 +96,68 @@ export default function ConsultPage() {
             </div>
           ) : (
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                if (agreed) setSubmitted(true);
+                if (!agreed) return;
+                setLoading(true);
+                setError("");
+                const fd = new FormData(e.currentTarget);
+                try {
+                  const res = await fetch("/api/consult", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      name: fd.get("name"),
+                      phone: fd.get("phone"),
+                      company: fd.get("company"),
+                      service: fd.get("category"),
+                      content: fd.get("content"),
+                      note: `상담가능시간: ${fd.get("preferredTime")}`,
+                    }),
+                  });
+                  if (!res.ok) {
+                    const data = await res.json();
+                    setError(data.error ?? "오류가 발생했습니다");
+                  } else {
+                    setSubmitted(true);
+                  }
+                } catch {
+                  setError("네트워크 오류가 발생했습니다");
+                } finally {
+                  setLoading(false);
+                }
               }}
               className="p-8 space-y-6"
             >
-              {/* Personal info */}
               <div>
                 <h3 className="font-bold text-navy text-base mb-4 pb-3 border-b border-gray-100">기본 정보</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="form-label">성함 <span className="text-red-500">*</span></label>
-                    <input type="text" className="form-input" placeholder="홍길동" required />
+                    <input name="name" type="text" className="form-input" placeholder="홍길동" required />
                   </div>
                   <div>
                     <label className="form-label">연락처 <span className="text-red-500">*</span></label>
-                    <input type="tel" className="form-input" placeholder="010-0000-0000" required />
+                    <input name="phone" type="tel" className="form-input" placeholder="010-0000-0000" required />
                   </div>
                   <div>
                     <label className="form-label">이메일</label>
-                    <input type="email" className="form-input" placeholder="example@email.com" />
+                    <input name="email" type="email" className="form-input" placeholder="example@email.com" />
                   </div>
                   <div>
                     <label className="form-label">회사명 (있는 경우)</label>
-                    <input type="text" className="form-input" placeholder="주식회사 ○○전기" />
+                    <input name="company" type="text" className="form-input" placeholder="주식회사 ○○전기" />
                   </div>
                 </div>
               </div>
 
-              {/* Consult info */}
               <div>
                 <h3 className="font-bold text-navy text-base mb-4 pb-3 border-b border-gray-100">상담 내용</h3>
                 <div className="space-y-5">
                   <div>
                     <label className="form-label">상담 분야 <span className="text-red-500">*</span></label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                      {[
-                        "전기공사업 양도양수",
-                        "신규창업 / 전기공사업등록",
-                        "법인설립",
-                        "기업진단",
-                        "분할·합병",
-                        "기타 문의",
-                      ].map((opt, i) => (
+                      {["전기공사업 양도양수","신규창업 / 전기공사업등록","법인설립","기업진단","분할·합병","기타 문의"].map((opt, i) => (
                         <label key={i} className="flex items-center gap-2 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-gold transition-colors text-sm">
                           <input type="radio" name="category" value={opt} className="accent-gold" required />
                           {opt}
@@ -148,19 +165,18 @@ export default function ConsultPage() {
                       ))}
                     </div>
                   </div>
-
                   <div>
                     <label className="form-label">상담 내용 <span className="text-red-500">*</span></label>
                     <textarea
+                      name="content"
                       className="form-input h-40 resize-none"
-                      placeholder="상담 내용을 자세히 작성해 주시면 더 정확하고 빠른 답변이 가능합니다.&#10;&#10;예) 서울 강남구 소재 일반전기공사업 면허를 양도하고 싶습니다. 현재 자본금 1억원, 전기기사 1명 보유 중입니다."
+                      placeholder="상담 내용을 자세히 작성해 주시면 더 정확하고 빠른 답변이 가능합니다."
                       required
                     />
                   </div>
-
                   <div>
                     <label className="form-label">상담 가능 시간</label>
-                    <select className="form-input">
+                    <select name="preferredTime" className="form-input">
                       <option>평일 오전 (09:00~12:00)</option>
                       <option>평일 오후 (13:00~18:00)</option>
                       <option>토요일 오전 (09:00~13:00)</option>
@@ -170,33 +186,25 @@ export default function ConsultPage() {
                 </div>
               </div>
 
-              {/* Agreement */}
               <div className="bg-gray-50 rounded-lg p-5">
                 <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="mt-0.5 accent-gold"
-                    checked={agreed}
-                    onChange={(e) => setAgreed(e.target.checked)}
-                    required
-                  />
+                  <input type="checkbox" className="mt-0.5 accent-gold" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} required />
                   <span className="text-sm text-gray-600 leading-relaxed">
-                    <strong className="text-navy">[필수]</strong> 개인정보 수집·이용에 동의합니다. 수집된 개인정보는
-                    상담 목적으로만 사용되며, 상담 완료 후 즉시 파기됩니다.
+                    <strong className="text-navy">[필수]</strong> 개인정보 수집·이용에 동의합니다. 수집된 개인정보는 상담 목적으로만 사용되며, 상담 완료 후 즉시 파기됩니다.
                   </span>
                 </label>
               </div>
 
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+
               <button
                 type="submit"
+                disabled={!agreed || loading}
                 className={`w-full py-4 text-lg font-bold rounded transition-all ${
-                  agreed
-                    ? "bg-gold hover:bg-gold-light text-white cursor-pointer"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  agreed && !loading ? "bg-gold hover:bg-gold-light text-white cursor-pointer" : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
-                disabled={!agreed}
               >
-                무료 상담 신청하기
+                {loading ? "신청 중..." : "무료 상담 신청하기"}
               </button>
             </form>
           )}

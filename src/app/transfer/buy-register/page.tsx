@@ -5,6 +5,8 @@ import { useState } from "react";
 
 export default function BuyRegisterPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   return (
     <>
@@ -28,13 +30,52 @@ export default function BuyRegisterPage() {
             <button onClick={() => setSubmitted(false)} className="btn-primary">추가 등록하기</button>
           </div>
         ) : (
-          <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="space-y-6">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setLoading(true);
+              setError("");
+              const fd = new FormData(e.currentTarget);
+              const desiredType = fd.get("desiredType") as string;
+              const region = fd.get("region") as string;
+              const purpose = fd.get("purpose") as string;
+              const budget = fd.get("budget") as string;
+              const details = fd.get("details") as string;
+              const contentParts = [`희망업종: ${desiredType}`, `희망지역: ${region}`];
+              if (purpose) contentParts.push(`인수목적: ${purpose}`);
+              if (budget) contentParts.push(`예산: ${budget}`);
+              if (details) contentParts.push(details);
+              try {
+                const res = await fetch("/api/consult", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    name: fd.get("name"),
+                    phone: fd.get("phone"),
+                    service: "양도양수 인수희망",
+                    content: contentParts.join(" / "),
+                  }),
+                });
+                if (!res.ok) {
+                  const data = await res.json();
+                  setError(data.error ?? "오류가 발생했습니다");
+                } else {
+                  setSubmitted(true);
+                }
+              } catch {
+                setError("네트워크 오류가 발생했습니다");
+              } finally {
+                setLoading(false);
+              }
+            }}
+            className="space-y-6"
+          >
             <div className="bg-white border border-gray-200 rounded-xl p-8 space-y-6">
               <h2 className="text-lg font-bold text-navy border-b border-gray-200 pb-4">인수 희망 조건</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label className="form-label">희망 업종 <span className="text-red-500">*</span></label>
-                  <select className="form-input" required>
+                  <select name="desiredType" className="form-input" required>
                     <option value="">선택하세요</option>
                     <option>일반전기공사업</option>
                     <option>전문전기공사업</option>
@@ -43,11 +84,11 @@ export default function BuyRegisterPage() {
                 </div>
                 <div>
                   <label className="form-label">희망 지역 <span className="text-red-500">*</span></label>
-                  <input type="text" className="form-input" placeholder="예: 서울 강남구" required />
+                  <input name="region" type="text" className="form-input" placeholder="예: 서울 강남구" required />
                 </div>
                 <div>
                   <label className="form-label">인수 목적</label>
-                  <select className="form-input">
+                  <select name="purpose" className="form-input">
                     <option value="">선택하세요</option>
                     <option>신규 진입</option>
                     <option>사업 확장</option>
@@ -57,12 +98,12 @@ export default function BuyRegisterPage() {
                 </div>
                 <div>
                   <label className="form-label">예산 범위</label>
-                  <input type="text" className="form-input" placeholder="예: 협의 가능" />
+                  <input name="budget" type="text" className="form-input" placeholder="예: 협의 가능" />
                 </div>
               </div>
               <div>
                 <label className="form-label">세부 요청사항</label>
-                <textarea className="form-input h-24 resize-none" placeholder="기타 특이사항이나 요청사항을 적어주세요" />
+                <textarea name="details" className="form-input h-24 resize-none" placeholder="기타 특이사항이나 요청사항을 적어주세요" />
               </div>
             </div>
 
@@ -71,15 +112,18 @@ export default function BuyRegisterPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label className="form-label">성함 <span className="text-red-500">*</span></label>
-                  <input type="text" className="form-input" required />
+                  <input name="name" type="text" className="form-input" required />
                 </div>
                 <div>
                   <label className="form-label">연락처 <span className="text-red-500">*</span></label>
-                  <input type="tel" className="form-input" placeholder="010-0000-0000" required />
+                  <input name="phone" type="tel" className="form-input" placeholder="010-0000-0000" required />
                 </div>
               </div>
             </div>
-            <button type="submit" className="w-full btn-gold text-base py-4">등록 신청하기</button>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+            <button type="submit" disabled={loading} className="w-full btn-gold text-base py-4 disabled:opacity-60">
+              {loading ? "등록 중..." : "등록 신청하기"}
+            </button>
           </form>
         )}
       </div>

@@ -5,11 +5,8 @@ import { useState } from "react";
 
 export default function SellRegisterPage() {
   const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   return (
     <>
@@ -30,23 +27,53 @@ export default function SellRegisterPage() {
             </div>
             <h2 className="text-2xl font-bold text-navy mb-2">등록이 완료되었습니다</h2>
             <p className="text-gray-500 mb-6">담당자가 확인 후 빠른 시일 내에 연락드리겠습니다.</p>
-            <button onClick={() => setSubmitted(false)} className="btn-primary">
-              추가 등록하기
-            </button>
+            <button onClick={() => setSubmitted(false)} className="btn-primary">추가 등록하기</button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setLoading(true);
+              setError("");
+              const fd = new FormData(e.currentTarget);
+              try {
+                const res = await fetch("/api/listing", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    licenseType: fd.get("licenseType"),
+                    location: fd.get("location"),
+                    capital: fd.get("capital"),
+                    name: fd.get("name"),
+                    phone: fd.get("phone"),
+                    technicalStaff: fd.get("technicalStaff"),
+                    remarks: fd.get("remarks"),
+                  }),
+                });
+                if (!res.ok) {
+                  const data = await res.json();
+                  setError(data.error ?? "오류가 발생했습니다");
+                } else {
+                  setSubmitted(true);
+                }
+              } catch {
+                setError("네트워크 오류가 발생했습니다");
+              } finally {
+                setLoading(false);
+              }
+            }}
+            className="space-y-6"
+          >
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
               등록하신 정보는 검토 후 목록에 게시됩니다. 허위 정보 등록 시 법적 책임이 있을 수 있습니다.
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl p-8 space-y-6">
               <h2 className="text-lg font-bold text-navy border-b border-gray-200 pb-4">양도 회사 정보</h2>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label className="form-label">업종 <span className="text-red-500">*</span></label>
-                  <select className="form-input" required>
+                  <select name="licenseType" className="form-input" required>
                     <option value="">선택하세요</option>
                     <option>일반전기공사업</option>
                     <option>전문전기공사업</option>
@@ -54,7 +81,7 @@ export default function SellRegisterPage() {
                 </div>
                 <div>
                   <label className="form-label">소재지 (시/도) <span className="text-red-500">*</span></label>
-                  <select className="form-input" required>
+                  <select name="location" className="form-input" required>
                     <option value="">선택하세요</option>
                     <option>서울</option>
                     <option>경기</option>
@@ -69,37 +96,36 @@ export default function SellRegisterPage() {
                 </div>
                 <div>
                   <label className="form-label">자본금 <span className="text-red-500">*</span></label>
-                  <input type="text" className="form-input" placeholder="예: 1억원" required />
+                  <input name="capital" type="text" className="form-input" placeholder="예: 1억원" required />
                 </div>
                 <div>
                   <label className="form-label">보유 기술자</label>
-                  <input type="text" className="form-input" placeholder="예: 전기기사 1명" />
+                  <input name="technicalStaff" type="text" className="form-input" placeholder="예: 전기기사 1명" />
                 </div>
               </div>
-
               <div>
                 <label className="form-label">특이사항</label>
-                <textarea className="form-input h-24 resize-none" placeholder="기타 특이사항이나 요청사항을 적어주세요" />
+                <textarea name="remarks" className="form-input h-24 resize-none" placeholder="기타 특이사항이나 요청사항을 적어주세요" />
               </div>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl p-8 space-y-6">
               <h2 className="text-lg font-bold text-navy border-b border-gray-200 pb-4">연락처 정보</h2>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label className="form-label">성함 <span className="text-red-500">*</span></label>
-                  <input type="text" className="form-input" required />
+                  <input name="name" type="text" className="form-input" required />
                 </div>
                 <div>
                   <label className="form-label">연락처 <span className="text-red-500">*</span></label>
-                  <input type="tel" className="form-input" placeholder="010-0000-0000" required />
+                  <input name="phone" type="tel" className="form-input" placeholder="010-0000-0000" required />
                 </div>
               </div>
             </div>
 
-            <button type="submit" className="w-full btn-gold text-base py-4">
-              등록 신청하기
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+            <button type="submit" disabled={loading} className="w-full btn-gold text-base py-4 disabled:opacity-60">
+              {loading ? "등록 중..." : "등록 신청하기"}
             </button>
           </form>
         )}
