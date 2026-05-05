@@ -93,12 +93,12 @@ export default function AdminDashboard() {
     const values = [...(rows[rowIndex] ?? [])];
     while (values.length < HEADERS[tab].length) values.push("");
     setFormValues(values);
-    setModal({ mode: "edit", rowIndex: rowIndex + 2, values });
+    setModal({ mode: "edit", rowIndex: rowIndex + 1, values });
   };
 
   const handleDelete = async (rowIndex: number) => {
     if (!confirm("이 항목을 삭제하시겠습니까?")) return;
-    await api(token).del(SHEETS[tab].name, rowIndex + 2);
+    await api(token).del(SHEETS[tab].name, rowIndex + 1);
     load(token, tab);
   };
 
