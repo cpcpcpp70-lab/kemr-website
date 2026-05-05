@@ -14,8 +14,13 @@ function verify(req: NextRequest) {
 export async function GET(req: NextRequest) {
   if (!verify(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const sheet = req.nextUrl.searchParams.get("sheet") ?? "";
-  const rows  = await readSheet(sheet);
-  return NextResponse.json({ rows });
+  try {
+    const rows = await readSheet(sheet);
+    return NextResponse.json({ rows });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }
 
 export async function POST(req: NextRequest) {
