@@ -26,8 +26,13 @@ export async function readSheet(sheetName: string): Promise<string[][]> {
 
 async function getSheetId(sheetName: string): Promise<number> {
   const meta = await sheets().spreadsheets.get({ spreadsheetId: SPREADSHEET_ID });
-  const sheet = meta.data.sheets?.find((s) => s.properties?.title === sheetName);
-  return sheet?.properties?.sheetId ?? 0;
+  const titles = meta.data.sheets?.map((s) => s.properties?.title) ?? [];
+  const normalized = sheetName.normalize("NFC");
+  const sheet = meta.data.sheets?.find(
+    (s) => (s.properties?.title ?? "").normalize("NFC") === normalized
+  );
+  if (!sheet) throw new Error(`Sheet not found: "${sheetName}" (available: ${titles.join(", ")})`);
+  return sheet.properties?.sheetId!;
 }
 
 export async function appendRow(sheetName: string, values: string[]): Promise<void> {
