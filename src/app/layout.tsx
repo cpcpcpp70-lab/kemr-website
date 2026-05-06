@@ -5,6 +5,7 @@ import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import FloatingLinks from "./components/FloatingLinks";
 import FloatingChatbot from "./components/FloatingChatbot";
+import KakaoFloatButton from "./components/KakaoFloatButton";
 
 const notoSansKR = Noto_Sans_KR({
   weight: ["300", "400", "500", "700"],
@@ -32,6 +33,7 @@ export default function RootLayout({
         <Footer />
         <FloatingLinks />
         <FloatingChatbot />
+        <KakaoFloatButton />
       </body>
     </html>
   );
