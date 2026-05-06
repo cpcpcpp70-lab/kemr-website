@@ -5,7 +5,7 @@ export default function KakaoFloatButton() {
         #kakao-float-btn {
           position: fixed;
           bottom: 24px;
-          right: 24px;
+          left: 24px;
           z-index: 9999;
           display: flex;
           align-items: center;
@@ -32,7 +32,7 @@ export default function KakaoFloatButton() {
         @media (max-width: 768px) {
           #kakao-float-btn {
             bottom: 16px;
-            right: 16px;
+            left: 16px;
             padding: 10px 14px;
             font-size: 13px;
           }
