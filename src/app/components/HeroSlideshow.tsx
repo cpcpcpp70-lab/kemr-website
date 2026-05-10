@@ -75,12 +75,12 @@ export default function HeroSlideshow() {
         </div>
 
         {/* Company name */}
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 drop-shadow-lg">
+        <h1 className="text-[6rem] md:text-[7.5rem] lg:text-[9rem] font-bold tracking-tight mb-4 drop-shadow-lg">
           전기창업경영연구원
         </h1>
 
         {/* Tagline */}
-        <p className="text-xl md:text-2xl text-white font-bold mb-10 tracking-wide">
+        <p className="text-[2.5rem] md:text-[3rem] text-white font-bold mb-10 tracking-wide">
           전기공사업 양도양수 · 신규창업 · 분할합병 전문 컨설팅
         </p>
 
@@ -102,14 +102,14 @@ export default function HeroSlideshow() {
             </svg>
             <a
               href="tel:1661-1861"
-              className="text-3xl md:text-4xl font-bold text-white tracking-widest hover:text-gold transition-colors"
+              className="text-[3.75rem] md:text-[4.5rem] font-bold text-white tracking-widest hover:text-gold transition-colors"
             >
               1661-1861
             </a>
           </div>
         </div>
 
-        <p className="text-white/60 text-sm mb-10">
+        <p className="text-white/60 text-[1.75rem] mb-10">
           평일 09:00 ~ 18:00 · 토요일 09:00 ~ 13:00
         </p>
 
