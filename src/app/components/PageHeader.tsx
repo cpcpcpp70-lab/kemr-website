@@ -18,19 +18,19 @@ const categoryImages: Record<string, string> = {
   "/company":
     "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80&auto=format&fit=crop",
   "/transfer":
-    "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80&auto=format&fit=crop",
   "/startup":
-    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1920&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1920&q=80&auto=format&fit=crop",
   "/division":
-    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80&auto=format&fit=crop",
   "/qa":
-    "https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1920&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1920&q=80&auto=format&fit=crop",
   "/consult":
-    "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1920&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=1920&q=80&auto=format&fit=crop",
 };
 
 const defaultImage =
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80&auto=format&fit=crop";
+  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80&auto=format&fit=crop";
 
 function getImage(pathname: string): string {
   for (const prefix of Object.keys(categoryImages)) {

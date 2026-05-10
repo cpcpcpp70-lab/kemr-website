@@ -151,12 +151,6 @@ export default function Navigation() {
               </div>
             ))}
 
-            <Link
-              href="/consult"
-              className="ml-4 px-5 py-2.5 bg-gold hover:bg-gold-light text-white text-[21px] font-bold rounded transition-colors whitespace-nowrap"
-            >
-              무료 상담신청
-            </Link>
           </nav>
 
           {/* Mobile hamburger */}
@@ -227,12 +221,6 @@ export default function Navigation() {
               )}
             </div>
           ))}
-          <Link
-            href="/consult"
-            className="block my-3 py-3 text-center bg-gold text-white text-[22px] font-bold rounded"
-          >
-            무료 상담신청
-          </Link>
         </div>
       </div>
     </header>
