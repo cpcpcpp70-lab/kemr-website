@@ -84,7 +84,7 @@ export default function Navigation() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBg}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-[70px]">
+        <div className="flex items-center justify-between h-[140px]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -95,7 +95,7 @@ export default function Navigation() {
               height={40}
               style={{ objectFit: "contain" }}
             />
-            <span className="text-white font-bold text-[20px] tracking-tight whitespace-nowrap">
+            <span className="text-white font-bold text-[40px] tracking-tight whitespace-nowrap">
               전기창업경영연구원
             </span>
           </Link>
@@ -109,7 +109,7 @@ export default function Navigation() {
                 onMouseEnter={() => setHoveredMenu(item.id)}
                 onMouseLeave={() => setHoveredMenu(null)}
               >
-                <button className="flex items-center gap-1 px-4 py-2 text-white/90 hover:text-gold text-[14px] font-medium transition-colors whitespace-nowrap h-[70px]">
+                <button className="flex items-center gap-1 px-4 py-2 text-white/90 hover:text-gold text-[28px] font-medium transition-colors whitespace-nowrap h-[140px]">
                   {item.label}
                   <svg
                     className={`w-3 h-3 transition-transform duration-200 ${hoveredMenu === item.id ? "rotate-180" : ""}`}
@@ -153,7 +153,7 @@ export default function Navigation() {
 
             <Link
               href="/consult"
-              className="ml-4 px-5 py-2.5 bg-gold hover:bg-gold-light text-white text-[13px] font-bold rounded transition-colors whitespace-nowrap"
+              className="ml-4 px-5 py-2.5 bg-gold hover:bg-gold-light text-white text-[26px] font-bold rounded transition-colors whitespace-nowrap"
             >
               무료 상담신청
             </Link>
@@ -190,7 +190,7 @@ export default function Navigation() {
           {menuItems.map((item) => (
             <div key={item.id} className="border-b border-white/10">
               <button
-                className="flex items-center justify-between w-full py-3 text-white/90 text-[14px] font-medium"
+                className="flex items-center justify-between w-full py-3 text-white/90 text-[28px] font-medium"
                 onClick={() =>
                   setOpenMobileMenu(
                     openMobileMenu === item.id ? null : item.id
@@ -218,7 +218,7 @@ export default function Navigation() {
                     <Link
                       key={sub.href}
                       href={sub.href}
-                      className="block py-2 text-white/70 hover:text-gold text-[13px]"
+                      className="block py-2 text-white/70 hover:text-gold text-[26px]"
                     >
                       {sub.label}
                     </Link>
@@ -229,7 +229,7 @@ export default function Navigation() {
           ))}
           <Link
             href="/consult"
-            className="block my-3 py-3 text-center bg-gold text-white text-[14px] font-bold rounded"
+            className="block my-3 py-3 text-center bg-gold text-white text-[28px] font-bold rounded"
           >
             무료 상담신청
           </Link>
