@@ -66,7 +66,7 @@ export default function HeroSlideshow() {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white px-4 text-center">
         {/* Top decoration line */}
-        <div className="flex items-center gap-4 mb-2">
+        <div className="flex items-center gap-4 mb-0">
           <div className="h-px w-16 bg-gold" />
           <span className="text-gold text-xl font-semibold tracking-[0.2em] uppercase">
             Korea Electric Management Research
