@@ -66,7 +66,7 @@ export default function HeroSlideshow() {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white px-4 text-center">
         {/* Top decoration line */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-2">
           <div className="h-px w-16 bg-gold" />
           <span className="text-gold text-xl font-semibold tracking-[0.2em] uppercase">
             Korea Electric Management Research
@@ -110,7 +110,7 @@ export default function HeroSlideshow() {
         </div>
 
         <p className="text-white/60 text-[1.75rem] mb-10">
-          평일 09:00 ~ 18:00 · 토요일 09:00 ~ 13:00
+          평일 09:00 ~ 18:00
         </p>
 
         {/* CTA Buttons */}
