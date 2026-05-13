@@ -31,18 +31,23 @@ export async function POST(req: NextRequest) {
 
   const SHEET_NAMES = ["상담신청", "양도양수매물", "공지사항", "온라인문의"];
 
-  const res = await sheets.spreadsheets.create({
-    requestBody: {
-      properties: { title: "전기.site 홈페이지 데이터" },
-      sheets: SHEET_NAMES.map((title, i) => ({
-        properties: { sheetId: i + 1, title },
-      })),
-    },
-  });
+  try {
+    const res = await sheets.spreadsheets.create({
+      requestBody: {
+        properties: { title: "전기.site 홈페이지 데이터" },
+        sheets: SHEET_NAMES.map((title, i) => ({
+          properties: { sheetId: i + 1, title },
+        })),
+      },
+    });
 
-  return NextResponse.json({
-    spreadsheetId: res.data.spreadsheetId,
-    spreadsheetUrl: res.data.spreadsheetUrl,
-    sheets: res.data.sheets?.map((s) => s.properties?.title),
-  });
+    return NextResponse.json({
+      spreadsheetId: res.data.spreadsheetId,
+      spreadsheetUrl: res.data.spreadsheetUrl,
+      sheets: res.data.sheets?.map((s) => s.properties?.title),
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }
