@@ -10,7 +10,6 @@ export default function LocationPage() {
         title="오시는길"
         subtitle="서울특별시 강남구 테헤란로 152, 41층"
         breadcrumbs={[{ label: "회사소개", href: "/company/intro" }, { label: "오시는길" }]}
-        backgroundImage="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=80&auto=format&fit=crop"
       />
 
       <div className="max-w-5xl mx-auto px-6 py-16">
