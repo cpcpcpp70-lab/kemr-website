@@ -130,7 +130,7 @@ export default function AdminDashboard() {
         </div>
         <div className="flex items-center gap-3">
           <a
-            href={`https://docs.google.com/spreadsheets/d/${process.env.NEXT_PUBLIC_GOOGLE_SPREADSHEET_ID ?? "1xpEKUR55lO4w4Y3b_HmO6h7nFTIqXEpZdbABCFNw8LY"}`}
+            href={`https://docs.google.com/spreadsheets/d/${process.env.NEXT_PUBLIC_GOOGLE_SPREADSHEET_ID ?? "1xpEKUR55IO4w4Y3b_HmO6h7nFTIqXEpZdbABCFNw8LY"}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs px-3 py-1.5 bg-green-600 hover:bg-green-500 rounded text-white font-medium"
