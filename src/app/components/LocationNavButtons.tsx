@@ -40,7 +40,7 @@ export default function LocationNavButtons() {
         `S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.skt.tmap.ku;end`
       : platform === 'ios'
       ? `tmap://route?goalname=${encodeURIComponent(DEST_NAME)}&goaly=${DEST_LAT}&goalx=${DEST_LNG}`
-      : `https://tmap.life/route?goalname=${encodeURIComponent(DEST_NAME)}&goaly=${DEST_LAT}&goalx=${DEST_LNG}`;
+      : `https://www.google.com/maps/dir/?api=1&destination=${DEST_LAT},${DEST_LNG}&destination_place_id=${encodeURIComponent(DEST_NAME)}`;
 
   return (
     <div className="flex gap-2 flex-wrap">
@@ -52,9 +52,11 @@ export default function LocationNavButtons() {
       </a>
       <a
         href={tmapHref}
+        target={platform === 'pc' ? '_blank' : undefined}
+        rel={platform === 'pc' ? 'noopener noreferrer' : undefined}
         className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-colors text-sm"
       >
-        티맵 길찾기
+        {platform === 'pc' ? '구글맵 길찾기' : '티맵 길찾기'}
       </a>
     </div>
   );
