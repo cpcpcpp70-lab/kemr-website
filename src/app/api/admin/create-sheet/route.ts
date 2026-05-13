@@ -30,6 +30,8 @@ export async function POST(req: NextRequest) {
 
   const SHEET_NAMES = ["상담신청", "양도양수매물", "공지사항", "온라인문의"];
 
+  const serviceEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ?? "(not set)";
+
   try {
     const res = await sheets.spreadsheets.create({
       requestBody: {
@@ -44,9 +46,10 @@ export async function POST(req: NextRequest) {
       spreadsheetId: res.data.spreadsheetId,
       spreadsheetUrl: res.data.spreadsheetUrl,
       sheets: res.data.sheets?.map((s) => s.properties?.title),
+      serviceEmail,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
-    return NextResponse.json({ error: msg }, { status: 500 });
+    return NextResponse.json({ error: msg, serviceEmail }, { status: 500 });
   }
 }
