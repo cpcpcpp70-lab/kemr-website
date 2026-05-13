@@ -1,36 +1,55 @@
 'use client';
 
-const DEST_LAT = 37.499968;
-const DEST_LNG = 127.027847;
-const DEST_NAME = '강남파이낸스센터';
+const DEST_NAME = '전기창업경영연구원';
+const DEST_LAT  = 37.5007;
+const DEST_LNG  = 127.0368;
 
-function openKakaoNav() {
-  window.open(
-    `https://map.kakao.com/link/to/${encodeURIComponent(DEST_NAME)},${DEST_LAT},${DEST_LNG}`,
-    '_blank',
-    'noopener,noreferrer'
-  );
-}
+const KAKAO_WEB = `https://map.kakao.com/link/to/${encodeURIComponent(DEST_NAME)},${DEST_LAT},${DEST_LNG}`;
+const TMAP_WEB  = `https://tmap.life/route?goalname=${encodeURIComponent(DEST_NAME)}&goaly=${DEST_LAT}&goalx=${DEST_LNG}`;
 
-function openTmapNav() {
+function openKakao() {
   const ua = navigator.userAgent;
-  const isIOS = /iPhone|iPad|iPod/i.test(ua);
   const isAndroid = /Android/i.test(ua);
+  const isIOS     = /iPhone|iPad|iPod/i.test(ua);
 
   if (isAndroid) {
-    const intentUrl = `intent://route?goalname=${encodeURIComponent(DEST_NAME)}&goalx=${DEST_LNG}&goaly=${DEST_LAT}&type=0#Intent;scheme=tmap;package=com.skt.tmap.ku;end`;
-    window.location.href = intentUrl;
+    window.location.href =
+      `intent://route?ep=${DEST_LAT},${DEST_LNG}&by=CAR` +
+      `#Intent;scheme=kakaomap;package=net.daum.android.map;end`;
   } else if (isIOS) {
-    const appScheme = `tmap://route?goalname=${encodeURIComponent(DEST_NAME)}&goalx=${DEST_LNG}&goaly=${DEST_LAT}&type=0`;
-    const startTime = Date.now();
+    const appScheme = `kakaomap://route?ep=${DEST_LAT},${DEST_LNG}&by=CAR`;
+    const start = Date.now();
     window.location.href = appScheme;
     setTimeout(() => {
-      if (Date.now() - startTime < 2500) {
+      if (Date.now() - start < 2500) {
+        window.location.href = 'https://apps.apple.com/kr/app/kakaomaps/id304608425';
+      }
+    }, 2000);
+  } else {
+    window.open(KAKAO_WEB, '_blank', 'noopener,noreferrer');
+  }
+}
+
+function openTmap() {
+  const ua = navigator.userAgent;
+  const isAndroid = /Android/i.test(ua);
+  const isIOS     = /iPhone|iPad|iPod/i.test(ua);
+
+  if (isAndroid) {
+    window.location.href =
+      `intent://route?goalname=${encodeURIComponent(DEST_NAME)}&goaly=${DEST_LAT}&goalx=${DEST_LNG}` +
+      `#Intent;scheme=tmap;package=com.skt.tmap.ku;end`;
+  } else if (isIOS) {
+    const appScheme = `tmap://route?goalname=${encodeURIComponent(DEST_NAME)}&goaly=${DEST_LAT}&goalx=${DEST_LNG}`;
+    const start = Date.now();
+    window.location.href = appScheme;
+    setTimeout(() => {
+      if (Date.now() - start < 2500) {
         window.location.href = 'https://apps.apple.com/kr/app/tmap/id431589174';
       }
     }, 2000);
   } else {
-    window.open('https://www.tmap.co.kr/', '_blank', 'noopener,noreferrer');
+    window.open(TMAP_WEB, '_blank', 'noopener,noreferrer');
   }
 }
 
@@ -38,22 +57,15 @@ export default function LocationNavButtons() {
   return (
     <div className="flex gap-2 flex-wrap">
       <button
-        onClick={openKakaoNav}
+        onClick={openKakao}
         className="flex items-center gap-1.5 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold rounded-lg transition-colors text-sm"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 3C6.477 3 2 6.477 2 11c0 2.88 1.63 5.42 4.1 6.97L5 21l3.55-1.93C9.61 19.65 10.78 20 12 20c5.523 0 10-3.477 10-9S17.523 3 12 3z"/>
-        </svg>
         카카오맵 길찾기
       </button>
       <button
-        onClick={openTmapNav}
+        onClick={openTmap}
         className="flex items-center gap-1.5 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-colors text-sm"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-          <path d="M3 12l9-9 9 9"/>
-          <path d="M9 21V9h6v12"/>
-        </svg>
         티맵 길찾기
       </button>
     </div>
