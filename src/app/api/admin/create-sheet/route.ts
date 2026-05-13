@@ -10,14 +10,35 @@ function verifyToken(token: string): boolean {
   return token === expected;
 }
 
-function getAuth(scopes: string[]) {
-  return new google.auth.GoogleAuth({
+function getSheets() {
+  const auth = new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
       private_key: process.env.GOOGLE_SERVICE_ACCOUNT_KEY?.replace(/\\n/g, "\n"),
     },
-    scopes,
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
+  return google.sheets({ version: "v4", auth });
+}
+
+const REQUIRED_SHEETS = ["상담신청", "양도양수매물", "공지사항", "온라인문의"];
+
+export async function GET(req: NextRequest) {
+  const token = req.headers.get("x-admin-token") ?? "";
+  if (!verifyToken(token)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const spreadsheetId = process.env.GOOGLE_SPREADSHEET_ID!;
+  const sheets = getSheets();
+
+  const meta = await sheets.spreadsheets.get({ spreadsheetId });
+  const current = meta.data.sheets?.map((s) => ({
+    title: s.properties?.title ?? "",
+    sheetId: s.properties?.sheetId ?? 0,
+  })) ?? [];
+
+  return NextResponse.json({ spreadsheetId, current, required: REQUIRED_SHEETS });
 }
 
 export async function POST(req: NextRequest) {
@@ -26,68 +47,62 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const serviceEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ?? "(not set)";
-  const SHEET_NAMES = ["상담신청", "양도양수매물", "공지사항", "온라인문의"];
+  const spreadsheetId = process.env.GOOGLE_SPREADSHEET_ID!;
+  const sheets = getSheets();
 
-  // 1. 스프레드시트 생성 (Drive + Sheets scope 필요)
-  const sheetsAuth = getAuth([
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive",
-  ]);
-  const sheets = google.sheets({ version: "v4", auth: sheetsAuth });
+  // 현재 시트 목록 가져오기
+  const meta = await sheets.spreadsheets.get({ spreadsheetId });
+  const current = meta.data.sheets?.map((s) => ({
+    title: (s.properties?.title ?? "").normalize("NFC"),
+    sheetId: s.properties?.sheetId ?? 0,
+  })) ?? [];
 
-  let spreadsheetId: string;
-  let spreadsheetUrl: string;
+  const requiredNFC = REQUIRED_SHEETS.map((s) => s.normalize("NFC"));
 
-  try {
-    const res = await sheets.spreadsheets.create({
-      requestBody: {
-        properties: { title: "전기.site 홈페이지 데이터" },
-        sheets: SHEET_NAMES.map((title, i) => ({
-          properties: { sheetId: i + 1, title },
-        })),
-      },
-    });
-    spreadsheetId = res.data.spreadsheetId!;
-    spreadsheetUrl = res.data.spreadsheetUrl!;
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
+  const toDelete = current.filter((s) => !requiredNFC.includes(s.title));
+  const toAdd = REQUIRED_SHEETS.filter(
+    (r) => !current.some((s) => s.title === r.normalize("NFC"))
+  );
+
+  const requests: object[] = [];
+
+  // 삭제할 시트
+  for (const s of toDelete) {
+    requests.push({ deleteSheet: { sheetId: s.sheetId } });
+  }
+
+  // 추가할 시트
+  for (const title of toAdd) {
+    requests.push({ addSheet: { properties: { title } } });
+  }
+
+  if (requests.length === 0) {
     return NextResponse.json({
-      error: msg,
-      serviceEmail,
-      hint: "Google Cloud Console에서 Drive API를 활성화해 주세요: https://console.cloud.google.com/apis/library/drive.googleapis.com",
-    }, { status: 500 });
-  }
-
-  // 2. 사용자(cpcpcpp70@gmail.com)에게 편집 권한 공유
-  const driveAuth = getAuth(["https://www.googleapis.com/auth/drive"]);
-  const drive = google.drive({ version: "v3", auth: driveAuth });
-
-  const shareResult: string[] = [];
-  const ownerEmail = "cpcpcpp70@gmail.com";
-
-  try {
-    await drive.permissions.create({
-      fileId: spreadsheetId,
-      requestBody: {
-        type: "user",
-        role: "writer",
-        emailAddress: ownerEmail,
-      },
-      sendNotificationEmail: false,
+      ok: true,
+      message: "이미 올바르게 구성되어 있습니다.",
+      current: current.map((s) => s.title),
     });
-    shareResult.push(`✅ ${ownerEmail}에 편집 권한 공유 완료`);
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    shareResult.push(`⚠️ 공유 실패 (수동으로 공유 필요): ${msg}`);
   }
+
+  // 삭제만 있을 때 시트가 1개 남을 수 없으므로 — 먼저 추가 후 삭제
+  const addRequests = requests.filter((r) => "addSheet" in r);
+  const deleteRequests = requests.filter((r) => "deleteSheet" in r);
+  const ordered = [...addRequests, ...deleteRequests];
+
+  await sheets.spreadsheets.batchUpdate({
+    spreadsheetId,
+    requestBody: { requests: ordered },
+  });
+
+  // 결과 확인
+  const after = await sheets.spreadsheets.get({ spreadsheetId });
+  const finalSheets = after.data.sheets?.map((s) => s.properties?.title ?? "") ?? [];
 
   return NextResponse.json({
     ok: true,
-    spreadsheetId,
-    spreadsheetUrl,
-    serviceEmail,
-    shareResult,
-    sheets: SHEET_NAMES,
+    deleted: toDelete.map((s) => s.title),
+    added: toAdd,
+    finalSheets,
+    spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`,
   });
 }
