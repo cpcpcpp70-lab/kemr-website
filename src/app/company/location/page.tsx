@@ -14,31 +14,11 @@ export default function LocationPage() {
 
       <div className="max-w-5xl mx-auto px-6 py-16">
 
-        {/* 실제 지도 */}
-        <div className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-          <div className="bg-gray-50 px-5 py-3 border-b border-gray-100 flex items-center justify-between flex-wrap gap-3">
-            <span className="text-sm font-semibold text-navy">지도 — 강남파이낸스센터 (GFC)</span>
-            <LocationNavButtons />
-          </div>
-          <iframe
-            src="https://www.openstreetmap.org/export/embed.html?bbox=127.0228%2C37.4969%2C127.0328%2C37.5029&layer=mapnik&marker=37.499968%2C127.027847"
-            width="100%"
-            height="420"
-            style={{ border: 0 }}
-            loading="lazy"
-            title="강남파이낸스센터 지도"
-          />
-          <div className="px-5 py-2 bg-gray-50 border-t border-gray-100">
-            <p className="text-xs text-gray-400">
-              지도 제공: OpenStreetMap · 실시간 내비게이션은 상단의 카카오맵 / 티맵 버튼을 이용해 주세요.
-            </p>
-          </div>
-        </div>
-
         {/* 약도 SVG */}
         <div className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-4">
-          <div className="bg-gray-50 px-5 py-3 border-b border-gray-100">
+          <div className="bg-gray-50 px-5 py-3 border-b border-gray-100 flex items-center justify-between flex-wrap gap-3">
             <span className="text-sm font-semibold text-navy">약도 — 강남파이낸스센터 (GFC)</span>
+            <LocationNavButtons />
           </div>
 
           <svg
@@ -153,7 +133,7 @@ export default function LocationPage() {
         </div>
 
         <p className="text-xs text-gray-400 text-center mb-12">
-          ※ 실시간 내비게이션은 상단 카카오맵 / 티맵 버튼을 이용해 주세요.
+          ※ 실제 위치 확인 및 내비게이션은 상단의 카카오맵 / 티맵 버튼을 이용해 주세요.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
