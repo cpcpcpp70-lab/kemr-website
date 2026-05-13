@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { google } from "googleapis";
+import { google, sheets_v4 } from "googleapis";
 import crypto from "crypto";
 
 const SECRET = process.env.ADMIN_SECRET ?? "kemr-secret-key";
@@ -64,19 +64,7 @@ export async function POST(req: NextRequest) {
     (r) => !current.some((s) => s.title === r.normalize("NFC"))
   );
 
-  const requests: object[] = [];
-
-  // 삭제할 시트
-  for (const s of toDelete) {
-    requests.push({ deleteSheet: { sheetId: s.sheetId } });
-  }
-
-  // 추가할 시트
-  for (const title of toAdd) {
-    requests.push({ addSheet: { properties: { title } } });
-  }
-
-  if (requests.length === 0) {
+  if (toDelete.length === 0 && toAdd.length === 0) {
     return NextResponse.json({
       ok: true,
       message: "이미 올바르게 구성되어 있습니다.",
@@ -84,14 +72,17 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // 삭제만 있을 때 시트가 1개 남을 수 없으므로 — 먼저 추가 후 삭제
-  const addRequests = requests.filter((r) => "addSheet" in r);
-  const deleteRequests = requests.filter((r) => "deleteSheet" in r);
-  const ordered = [...addRequests, ...deleteRequests];
+  // 먼저 추가(시트 0개 방지), 그 다음 삭제
+  const addRequests: sheets_v4.Schema$Request[] = toAdd.map((title) => ({
+    addSheet: { properties: { title } },
+  }));
+  const deleteRequests: sheets_v4.Schema$Request[] = toDelete.map((s) => ({
+    deleteSheet: { sheetId: s.sheetId },
+  }));
 
   await sheets.spreadsheets.batchUpdate({
     spreadsheetId,
-    requestBody: { requests: ordered },
+    requestBody: { requests: [...addRequests, ...deleteRequests] },
   });
 
   // 결과 확인
