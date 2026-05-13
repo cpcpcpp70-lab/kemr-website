@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
     },
     scopes: [
       "https://www.googleapis.com/auth/spreadsheets",
-      "https://www.googleapis.com/auth/drive",
     ],
   });
 
