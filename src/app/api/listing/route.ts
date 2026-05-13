@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readSheet, appendRow } from "@/lib/googleSheets";
 
-const SHEET = "양도매물";
+const SHEET = "양도양수매물";
 
 export async function POST(req: NextRequest) {
   try {

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 type Row = string[];
 
 const SHEETS = {
-  listings:  { name: "양도매물",  label: "양도양수 매물" },
+  listings:  { name: "양도양수매물",  label: "양도양수 매물" },
   consults:  { name: "상담신청",  label: "상담 신청 현황" },
   notices:   { name: "공지사항",  label: "공지사항" },
   inquiries: { name: "온라인문의", label: "온라인 문의" },
